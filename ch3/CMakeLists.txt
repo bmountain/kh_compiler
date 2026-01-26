@@ -1,0 +1,6 @@
+add_subdirectory(calc)
+add_subdirectory(calc2)
+add_subdirectory(parity)
+add_subdirectory(prefixcalc)
+add_subdirectory(logic)
+add_subdirectory(three_address)

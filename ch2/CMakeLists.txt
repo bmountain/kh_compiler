@@ -1,0 +1,5 @@
+add_subdirectory(sample)
+add_subdirectory(postfix)
+add_subdirectory(literals)
+add_subdirectory(expression)
+add_subdirectory(control)
