@@ -1,1 +1,2 @@
 add_subdirectory(memcalc)
+add_subdirectory(lispcalc)

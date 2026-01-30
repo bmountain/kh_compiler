@@ -11,6 +11,8 @@ alpha [a-zA-Z]
 alnum [a-zA-Z0-9]
 var {alpha}{alnum}*
 digit [0-9]
+integer {digit}+
+real {digit}+"."{digit}*
 other .
 
 %%
@@ -28,10 +30,25 @@ other .
 "log" {return LOG;}
 "sqrt" {return SQRT;}
 {var} {yylval.cval = yytext; return VAR;}
-{digit}+ {sscanf(yytext, "%d", &yylval.ival);
+{integer}"K" {
+  sscanf(yytext, "%dK", &yylval.ival);
+  yylval.ival = 1000 * yylval.ival;
+  return INTC;
+}
+{integer}"M" {
+  sscanf(yytext, "%dM", &yylval.ival);
+  yylval.ival = 1000000 * yylval.ival;
+  return INTC;
+}
+{integer}"G" {
+  sscanf(yytext, "%dG", &yylval.ival);
+  yylval.ival = 1000000000 * yylval.ival;
+  return INTC;
+}
+{integer} {sscanf(yytext, "%d", &yylval.ival);
           return INTC;
          }
-{digit}+"."{digit}* {sscanf(yytext, "%lf", &yylval.rval);
+{real} {sscanf(yytext, "%lf", &yylval.rval);
                      return REALC;
                     }
 {other} {fprintf(stderr, "Illegal char %c ignored.\n", yytext[0]);}
