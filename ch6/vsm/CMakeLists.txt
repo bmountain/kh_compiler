@@ -1,0 +1,9 @@
+add_library(
+vsm
+vsm.c
+)
+target_link_directories(
+  vsm
+  PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}
+)

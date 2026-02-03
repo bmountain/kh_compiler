@@ -1,0 +1,2 @@
+add_subdirectory(vsm)
+add_subdirectory(assembly_sample)
