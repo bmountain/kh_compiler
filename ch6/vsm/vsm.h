@@ -51,6 +51,7 @@ typedef enum
 
 #define ISEG_SIZE 1000               // size of instruction segment
 #define DSEG_SIZE 1000               // size of data segment
+#define VAR_SIZE 52                  // number of variables
 #define FRAME_BOTTOM (DSEG_SIZE - 1) // last address of data segment
 
 #define FP 0x01 // frame register decoration bit

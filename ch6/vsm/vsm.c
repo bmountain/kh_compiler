@@ -124,8 +124,8 @@ int StartVSM(int StartAddr, int TraceSW)
     case NOP:
       continue;
     case ASSGN:
-      addr = Stack[--SP];
-      Dseg[addr] = Stack[SP] = Stack[SP + 1];
+      addr = Stack[--SP];                     // bottom [..., addr, value] top
+      Dseg[addr] = Stack[SP] = Stack[SP + 1]; // bottom [..., value] top
       continue;
     case ADD:
       BINOP(+);
