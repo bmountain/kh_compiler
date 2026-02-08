@@ -11,7 +11,7 @@ int to_int(const char* s);
 %option noyywrap
 
 ws [ \t\n]
-symbol [=?!(),:;]
+symbol [?!(),:;]
 digit [0-9]
 letter [a-zA-Z_]
 id {letter}({letter}|{digit})*
@@ -21,6 +21,12 @@ other .
 
 {ws}+
 {symbol} {return yytext[0];}
+"+=" {yylval.Int = ADD; return CASSIGN;}
+"-=" {yylval.Int = SUB; return CASSIGN;}
+"*=" {yylval.Int = MUL; return CASSIGN;}
+"/=" {yylval.Int = DIV; return CASSIGN;}
+"%=" {yylval.Int = MOD; return CASSIGN;}
+"=" {return ASSIGN;}
 "+" {yylval.Int = ADD; return ADDOP;}
 "-" {yylval.Int = SUB; return ADDOP;}
 "*" {yylval.Int = MUL; return MULOP;}
@@ -39,10 +45,9 @@ other .
 "int" {return TYPE;}
 "read" {return READ;}
 "write" {return WRITE;}
-{digit}+ {yylval.Int = atoi(yytext); return NUM;}
-"0"{digit}+ {yylval.Int = to_int(yytext); return NUM;}
 "0"[xX][0-9a-zA-Z]+ {yylval.Int = to_int(yytext); return NUM;}
-("0""x"?)?{digit}+ {yylval.Int = to_int(yytext); return NUM;}
+"0"{digit}+ {yylval.Int = to_int(yytext); return NUM;}
+{digit}+ {yylval.Int = atoi(yytext); return NUM;}
 {id} {yylval.Name = IDentry(yytext, yyleng); return ID;}
 {other} {fprintf(stderr, "Illegal character %c. Ignored.\n", yytext[0]);}
 

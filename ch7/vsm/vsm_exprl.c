@@ -123,7 +123,7 @@ int StartVSM(int StartAddr, int TraceSW)
     switch (op) {
     case NOP:
       continue;
-    case ASSGN:
+    case ASSGN: // [addr, value]
       addr = Stack[--SP];
       Dseg[addr] = Stack[SP] = Stack[SP + 1];
       continue;
@@ -247,7 +247,7 @@ int StartVSM(int StartAddr, int TraceSW)
     case HALT:
       return 0;
     case INPUT:
-      scanf("%d\n", &Dseg[Stack[SP--]]);
+      scanf("%d", &Dseg[Stack[SP--]]);
       continue;
     case OUTPUT:
       printf("%15d\n", Stack[SP--]);

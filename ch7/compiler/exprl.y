@@ -18,7 +18,10 @@ int SymRef(const char*);
 %token <Int> ADDOP MULOP PPMM RELOP NUM
 %token <Name> ID
 
-%right '='
+%type <Name> LHS
+
+%right ASSIGN
+%right <Int> CASSIGN
 %right '?' ':'
 %left LOR
 %left LAND
@@ -45,14 +48,23 @@ s_list :
        ;
 
 stmt : expr ';' {Pout(REMOVE);} // discard return value of expr
-     | READ LHS ';' {Pout(INPUT);}
-     | WRITE expr ';' {Pout(OUTPUT);}
+     | READ read_list ';' 
+     | WRITE write_list ';'
      | error ';' {yyerrok;}
+
+read_list: LHS {Pout(INPUT);}
+         | read_list ',' LHS {Pout(INPUT);}
+         ;
+
+write_list: LHS {Cout(PUSH, SymRef($1)); Pout(OUTPUT);}
+          | write_list ',' LHS {Cout(PUSH, SymRef($3)); Pout(OUTPUT);}
+          ;
      
-LHS : ID {Cout(PUSHI, SymRef($1));} // put address of ID
+LHS : ID {Cout(PUSHI, SymRef($1)); $$ = $1;} // put address of ID
     ;
 
-expr : LHS '=' expr {Pout(ASSGN);}
+expr : LHS ASSIGN expr {Pout(ASSGN);}
+     | LHS CASSIGN { Cout(PUSH, SymRef($1)); } expr {Pout($2); Pout(ASSGN);}
      | expr '?' {$<Int>$ = PC(); Cout(BEQ, -1);} // if <top of stack> != 0, jump to the instruction of expr3
        expr ':' {$<Int>$ = PC(); Cout(JUMP, -1); Bpatch($<Int>3, PC());} // after expr3, jump to the instruction after expr3. back patch BEQ address with expr3
        expr {Bpatch($<Int>6, PC());} // back patch JUMP with the instruction after expr3

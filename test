@@ -1,0 +1,13 @@
+int x;
+x = 2;
+write x;
+x += 3;
+write x;
+x -= 1;
+write x;
+x /= 2;
+write x;
+x = 7;
+write x;
+x %= 2;
+write x;
