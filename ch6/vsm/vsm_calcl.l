@@ -1,6 +1,6 @@
 %{
 #include "y.tab.h"
-#include "vsm.h"
+#include "vsm_calcl.h"
 #include <stdio.h>
 #include <ctype.h>
 int SkipComment(void);

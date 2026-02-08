@@ -1,16 +1,16 @@
 add_library(
-vsm
-vsm.c
+vsm_calcl
+vsm_calcl.c
 )
 target_link_directories(
-  vsm
+  vsm_calcl
   PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 bison_target(
   calclParser
-  calcl.y
+  vsm_calcl.y
   y.tab.c
   DEFINES_FILE y.tab.h
   OPTIONS -Wcounterexamples
@@ -18,7 +18,7 @@ bison_target(
 
 flex_target(
   calclLexer
-  calcl.l
+  vsm_calcl.l
   lex.yy.c
 )
 
@@ -40,5 +40,5 @@ message("${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(
   calcl
   PRIVATE
-  vsm
+  vsm_calcl
 )

@@ -1,5 +1,5 @@
 %{
-#include "vsm.h"
+#include "vsm_calcl.h"
 #include <stdio.h>
 void yyerror(const char*);
 int yylex(void);

@@ -1,4 +1,4 @@
-#include "vsm.h"
+#include "vsm_exprl.h"
 #include <stdio.h>
 
 int DebugSW = 0; // flag to dump assembly
@@ -124,8 +124,8 @@ int StartVSM(int StartAddr, int TraceSW)
     case NOP:
       continue;
     case ASSGN:
-      addr = Stack[--SP];                     // bottom [..., addr, value] top
-      Dseg[addr] = Stack[SP] = Stack[SP + 1]; // bottom [..., value] top
+      addr = Stack[--SP];
+      Dseg[addr] = Stack[SP] = Stack[SP + 1];
       continue;
     case ADD:
       BINOP(+);

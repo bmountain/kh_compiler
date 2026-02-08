@@ -5,7 +5,7 @@ main.c
 target_link_libraries(
   assembly_sample
   PRIVATE
-  vsm
+  vsm_calcl
 )
 
 target_include_directories(
