@@ -14,7 +14,7 @@ int SymRef(const char*);
   char* Name;
 }
 
-%token TYPE READ WRITE
+%token TYPE READ WRITE IF ELSE WHILE DO
 %token <Int> ADDOP MULOP PPMM RELOP NUM
 %token <Name> ID
 
@@ -42,6 +42,7 @@ sentence_list: sentence
 
 sentence: decl_list 
         | stmt
+        | '{' sentence_list '}'
         | ';'
         ;
 
@@ -55,6 +56,13 @@ decl : TYPE ID {SymDecl($2);}
 stmt : expr ';' {Pout(REMOVE);} // discard return value of expr
      | READ read_list ';' 
      | WRITE write_list ';'
+     | IF '(' expr  ')'{$<Int>$ = PC(); Cout(BEQ, -1);}
+       sentence ELSE {$<Int>$ = PC(); Cout(JUMP, -1); Bpatch($<Int>5, PC());}
+       sentence {Bpatch($<Int>8, PC());}
+     | WHILE {$<Int>$ = PC();} '(' expr ')' {$<Int>$ = PC(); Cout(BEQ, -1);}
+       sentence {Cout(JUMP, $<Int>2); Bpatch($<Int>6, PC());}
+     | DO {$<Int>$ = PC();}
+       sentence WHILE '(' expr ')' ';' { Cout(BNE, $<Int>2); }
      | error ';' {yyerrok;}
      ;
 

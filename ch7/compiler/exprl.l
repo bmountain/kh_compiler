@@ -11,7 +11,7 @@ int to_int(const char* s);
 %option noyywrap
 
 ws [ \t\n]
-symbol [?!(),:;]
+symbol [?!(),:;{}]
 digit [0-9]
 letter [a-zA-Z_]
 id {letter}({letter}|{digit})*
@@ -45,6 +45,10 @@ other .
 "int" {return TYPE;}
 "read" {return READ;}
 "write" {return WRITE;}
+"if" {return IF;}
+"else" {return ELSE;}
+"while" {return WHILE;}
+"do" {return DO;}
 "0"[xX][0-9a-zA-Z]+ {yylval.Int = to_int(yytext); return NUM;}
 "0"{digit}+ {yylval.Int = to_int(yytext); return NUM;}
 {digit}+ {yylval.Int = atoi(yytext); return NUM;}

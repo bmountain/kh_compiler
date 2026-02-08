@@ -1,7 +1,7 @@
 bison_target(
   ExprlParser
   compiler/exprl.y
-  y.tab.c
+  ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c
   DEFINES_FILE y.tab.h
   OPTIONS -Wcounterexamples
 )
@@ -9,7 +9,7 @@ bison_target(
 flex_target(
   ExprlLexer
   compiler/exprl.l
-  lex.yy.c
+  ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c
 )
 
 set(TARGET Exprl)
