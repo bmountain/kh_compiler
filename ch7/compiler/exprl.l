@@ -5,6 +5,7 @@
 #include <ctype.h>
 
 char* IDentry(char*, int);
+int to_int(const char* s);
 %}
 
 %option noyywrap
@@ -39,7 +40,40 @@ other .
 "read" {return READ;}
 "write" {return WRITE;}
 {digit}+ {yylval.Int = atoi(yytext); return NUM;}
+"0"{digit}+ {yylval.Int = to_int(yytext); return NUM;}
+"0"[xX][0-9a-zA-Z]+ {yylval.Int = to_int(yytext); return NUM;}
+("0""x"?)?{digit}+ {yylval.Int = to_int(yytext); return NUM;}
 {id} {yylval.Name = IDentry(yytext, yyleng); return ID;}
 {other} {fprintf(stderr, "Illegal character %c. Ignored.\n", yytext[0]);}
 
 %%
+
+// convert octtal/decimal/hex number to int
+int to_int(const char* s)
+{
+  int c;
+  int ret = 0;
+  if (s[0] != '0'){ // dec
+    return atoi(s);
+  }
+  if (tolower(s[1]) == 'x'){ // hex
+  int i;
+  for(i = 2; s[i] != '\0'; ++i){
+      c = tolower(s[i]);
+        ret *= 16;
+      if ('a' <= c && c <= 'z'){
+        ret += c - 'a' + 10;
+      } else {
+        ret += c - '0';
+      }
+    }
+    return ret;
+  } else { // octal
+    for(int i = 1; s[i] != '\0'; ++i){
+      c = tolower(s[i]);
+      ret *= 8;
+      ret += c - '0';
+    }
+    return ret;
+  }
+}

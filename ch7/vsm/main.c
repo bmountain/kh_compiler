@@ -81,6 +81,7 @@ static void SetUpOpt(int argc, char* argv[])
 void yyerror(char* msg)
 {
   extern int yylineno;
-  printf("%s at line %d\n", msg, yylineno);
+  extern char* yytext;
+  printf("%s at line %d: %s\n", msg, yylineno, yytext);
   ErrorC++;
 }
