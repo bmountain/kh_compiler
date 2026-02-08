@@ -33,24 +33,30 @@ int SymRef(const char*);
 
 %%
 
-program : decl_list s_list {Pout(HALT);}
+program : sentence_list {Pout(HALT);}
         ;
 
-decl_list :
-          | decl_list decl ';'
+sentence_list: sentence
+            | sentence_list sentence
+            ;
+
+sentence: decl_list 
+        | stmt
+        | ';'
+        ;
+
+decl_list : decl ';'
           ;
 
 decl : TYPE ID {SymDecl($2);}
     | decl ',' ID {SymDecl($3);}
-
-s_list :
-       | s_list stmt
-       ;
+    ;
 
 stmt : expr ';' {Pout(REMOVE);} // discard return value of expr
      | READ read_list ';' 
      | WRITE write_list ';'
      | error ';' {yyerrok;}
+     ;
 
 read_list: LHS {Pout(INPUT);}
          | read_list ',' LHS {Pout(INPUT);}

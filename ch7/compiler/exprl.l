@@ -26,7 +26,6 @@ other .
 "*=" {yylval.Int = MUL; return CASSIGN;}
 "/=" {yylval.Int = DIV; return CASSIGN;}
 "%=" {yylval.Int = MOD; return CASSIGN;}
-"=" {return ASSIGN;}
 "+" {yylval.Int = ADD; return ADDOP;}
 "-" {yylval.Int = SUB; return ADDOP;}
 "*" {yylval.Int = MUL; return MULOP;}
@@ -42,6 +41,7 @@ other .
 ">=" {yylval.Int = BGE; return RELOP;}
 "==" {yylval.Int = BEQ; return RELOP;}
 "!=" {yylval.Int = BNE; return RELOP;}
+"=" {return ASSIGN;}
 "int" {return TYPE;}
 "read" {return READ;}
 "write" {return WRITE;}
